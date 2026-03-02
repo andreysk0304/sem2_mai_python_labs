@@ -7,7 +7,7 @@ from task_platform.sources.parsers import ApiJsonParser
 
 
 class ApiTaskSource:
-    """Источник задач из HTTP API. Использует ApiJsonParser и TaskMapper (как файл — парсер + маппер)."""
+    """Источник задач из HTTP API. Использует ApiJsonParser и TaskMapper"""
 
     def __init__(
         self,

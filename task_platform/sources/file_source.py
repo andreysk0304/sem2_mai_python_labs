@@ -2,6 +2,7 @@ from pathlib import Path
 from typing import Iterator
 
 from task_platform.contracts.mapper import TaskMapperProtocol
+from task_platform.contracts.parser import FileParserProtocol
 from task_platform.domain.task import Task
 from task_platform.sources.mappers import TaskMapper
 from task_platform.sources.parsers import JsonFileParser
@@ -13,7 +14,7 @@ class JsonFileTaskSource:
     def __init__(
         self,
         path: str | Path,
-        parser: JsonFileParser | None = None,
+        parser: FileParserProtocol | None = None,
         mapper: TaskMapperProtocol | None = None,
     ) -> None:
         self._path = Path(path)
