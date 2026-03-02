@@ -1,3 +1,3 @@
-from task_platform.domain.task import Task
+from task_platform.domain.task import Task, TaskStatus
 
-__all__ = ["Task"]
+__all__ = ["Task", "TaskStatus"]

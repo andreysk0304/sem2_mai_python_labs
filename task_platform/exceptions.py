@@ -22,3 +22,7 @@ class InvalidSourceConfigError(TaskSourceError):
 
 class InvalidTaskSource(TaskSourceError):
     """Некорректный истоник задач, не соблюдается TaskSourceProtocol"""
+
+
+class TaskValidationError(TaskPlatformError):
+    """Нарушение инварианта модели задачи"""
