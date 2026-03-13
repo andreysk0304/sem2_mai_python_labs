@@ -1,48 +1,31 @@
+import logging
 from typing import Iterator
 
-import httpx
+from task_platform.contracts.mapper import TaskMapperProtocol
 
+logger = logging.getLogger(__name__)
 from task_platform.domain.task import Task
-from task_platform.exceptions import InvalidTaskDataError, InvalidTaskItemError
+from task_platform.sources.mappers import TaskMapper
+from task_platform.sources.parsers import ApiJsonParser
 
 
 class ApiTaskSource:
-    """
-    Источник задач, получающий их по GET запросу к API
-    """
+    """Источник задач из HTTP API. Использует ApiJsonParser и TaskMapper"""
 
-    def __init__(self, base_url: str, path: str = "/tasks") -> None:
-        """
-        :param base_url: Базовый URL API
-        :param path: Путь к эндпоинту списка задач
-        """
+    def __init__(
+        self,
+        base_url: str,
+        path: str = "/tasks",
+        parser: ApiJsonParser | None = None,
+        mapper: TaskMapperProtocol | None = None,
+    ) -> None:
         self._base_url = base_url.rstrip("/")
         self._path = path.lstrip("/")
+        self._parser = parser or ApiJsonParser()
+        self._mapper = mapper or TaskMapper()
 
     def get_tasks(self) -> Iterator[Task]:
-        """
-        Функция делает GET запрос к API и лениво ( как генератор ) возвращает задачи
-
-        :return: Задачи из API ( Task )
-        """
-        url = self._base_url + "/" + self._path
-
-        with httpx.Client() as client:
-            response = client.get(url)
-            response.raise_for_status()
-            data = response.json()
-
-        if not isinstance(data, list):
-            raise InvalidTaskDataError("Ответ API должен содержать массив задач")
-
-        for item in data:
-            if not isinstance(item, dict):
-                raise InvalidTaskItemError("Каждый элемент должен быть объектом с id и payload")
-
-            task_id = item.get("id")
-            payload = item.get("payload")
-
-            if task_id is None:
-                raise InvalidTaskItemError("Задача должна содержать поле id")
-
-            yield Task(id=str(task_id), payload=payload)
+        raw_list = self._parser.parse(self._base_url, self._path)
+        logger.debug("Получено %d задач из API %s", len(raw_list), self._base_url)
+        for raw in raw_list:
+            yield self._mapper.to_task(raw)

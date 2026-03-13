@@ -31,7 +31,7 @@ def test_api_source_parses_response() -> None:
     ]
     mock_response.raise_for_status = MagicMock()
 
-    with patch("task_platform.sources.api_source.httpx") as mock_httpx:
+    with patch("task_platform.sources.parsers.api_json_parser.httpx") as mock_httpx:
         mock_client = MagicMock()
         mock_client.get.return_value = mock_response
         mock_client.__enter__ = MagicMock(return_value=mock_client)
