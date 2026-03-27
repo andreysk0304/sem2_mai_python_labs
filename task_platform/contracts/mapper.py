@@ -8,5 +8,4 @@ from task_platform.domain.task import Task
 class TaskMapperProtocol(Protocol):
     """Протокол: объект, преобразующий сырую запись (dict) в Task."""
 
-    def to_task(self, raw: dict[str, Any]) -> Task:
-        ...
+    def to_task(self, raw: dict[str, Any]) -> Task: ...

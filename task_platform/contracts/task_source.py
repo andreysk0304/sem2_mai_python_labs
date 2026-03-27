@@ -10,5 +10,4 @@ class TaskSourceProtocol(Protocol):
     Проверяет удовлетворяет источник условию наличия get_tasks() возвращающего итерацию задач (Iterable[Task])
     """
 
-    def get_tasks(self) -> Iterable[Task]:
-        ...
+    def get_tasks(self) -> Iterable[Task]: ...

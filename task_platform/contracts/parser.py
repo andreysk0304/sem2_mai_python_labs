@@ -7,5 +7,4 @@ from pathlib import Path
 class FileParserProtocol(Protocol):
     """Контракт парсера файлов, получающих данные из различных файлов"""
 
-    def parse(self, path: str | Path) -> list[dict]:
-        ...
+    def parse(self, path: str | Path) -> list[dict]: ...

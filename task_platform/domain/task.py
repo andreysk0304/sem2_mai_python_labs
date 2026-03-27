@@ -53,6 +53,10 @@ class Task:
     def payload(self) -> Any:
         return self._payload
 
+    @payload.setter
+    def payload(self, payload: Any) -> None:
+        self._payload = payload
+
     @property
     def is_ready(self) -> bool:
         """Задача готова к выполнению (статус pending или in_progress)"""

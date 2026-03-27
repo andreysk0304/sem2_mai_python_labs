@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from datetime import datetime
 from enum import Enum
 from typing import Any, Type
@@ -98,7 +100,7 @@ class DatetimeDescriptor:
 class SummaryDescriptor:
     """Non-data дескриптор, только __get__, вычисляемое значение summary"""
 
-    def __get__(self, obj: Any, owner: Any) -> Any:
+    def __get__(self, obj: Any, owner: Any) -> str | SummaryDescriptor:
         if obj is None:
             return self
         return f"{obj.id}: {obj.status.value}"

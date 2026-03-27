@@ -1,4 +1,4 @@
-# Отчёт по лабораторной работе №1 (task platform)
+# Отчёт по лабораторной работе №2 (task platform)
 
 ---
 
@@ -55,4 +55,3 @@ docker compose up api
 ```bash
 docker compose run --rm demo
 ```
-# sem2_mai_python_labs
