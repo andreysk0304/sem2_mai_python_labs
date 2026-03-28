@@ -34,12 +34,12 @@ class Task:
 
     __slots__ = ("_id", "_payload", "_description", "_priority", "_status", "_created_at")
 
-    id = NonEmptyStrDescriptor("_id")
-    description = StrDescriptor("_description")
-    priority = PriorityDescriptor("_priority")
-    status = StatusDescriptor("_status", TaskStatus)
-    created_at = DatetimeDescriptor("_created_at")
-    summary = SummaryDescriptor()
+    id: str = NonEmptyStrDescriptor("_id")
+    description: str = StrDescriptor("_description")
+    priority: int = PriorityDescriptor("_priority")
+    status: TaskStatus = StatusDescriptor("_status", TaskStatus)
+    created_at: datetime = DatetimeDescriptor("_created_at")
+    summary: str = SummaryDescriptor()
 
     def __init__(self, id: str, payload: Any = None, description: str = "", priority: int = 0, status: TaskStatus = TaskStatus.DRAFT, created_at: datetime | None = None) -> None:
         self.id = id

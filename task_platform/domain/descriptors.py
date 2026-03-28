@@ -31,7 +31,7 @@ class NonEmptyStrDescriptor:
     def __init__(self, storage: str) -> None:
         self._storage = storage
 
-    def __get__(self, obj: Any, owner: Any) -> str:
+    def __get__(self, obj: Any, owner: Any) -> str | NonEmptyStrDescriptor:
         if obj is None:
             return self
         return getattr(obj, self._storage, "")
@@ -48,16 +48,14 @@ class StrDescriptor:
     def __init__(self, storage: str) -> None:
         self._storage = storage
 
-    def __get__(self, obj: Any, owner: Any) -> str:
+    def __get__(self, obj: Any, owner: Any) -> str | StrDescriptor:
         if obj is None:
             return self
-
         return getattr(obj, self._storage, "")
 
     def __set__(self, obj: Any, value: Any) -> None:
         if value is not None and not isinstance(value, str):
             raise TaskValidationError("описание должно быть строкой")
-
         setattr(obj, self._storage, value if value is not None else "")
 
 
