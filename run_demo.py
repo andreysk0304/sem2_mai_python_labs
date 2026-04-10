@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
-"""Демо: приём задач из файла, генератора и API (если задан API_URL)."""
+"""Демо: источники задач и работа TaskQueue поверх них."""
 import json
 import os
 import tempfile
 from pathlib import Path
 
 from task_platform.contracts.task_source import TaskSourceProtocol
+from task_platform.domain import TaskQueue
 from task_platform.sources import ApiTaskSource, FileTaskSource, GeneratorTaskSource
 from task_platform.validation import ensure_task_source
 
@@ -25,16 +26,22 @@ def main() -> None:
     if api_url := os.environ.get("API_URL"):
         sources.append(ApiTaskSource(api_url))
 
-    print("Собираем задачи из источников:\n")
+    print("Демонстрация TaskQueue поверх разных источников:\n")
     for i, source in enumerate(sources, 1):
         ensure_task_source(source)
-        tasks = list(source.get_tasks())
-        print(f" Источник {i}: {len(tasks)} задач")
-        for t in tasks:
-            print(f"  id={t.id!r}, payload={t.payload}")
+        queue = TaskQueue(source)
+
+        preview_ids = [task.id for task in queue.take(2)]
+        all_tasks = list(queue)
+
+        print(f" Источник {i}: {source.__class__.__name__}")
+        print(f"  Первые задачи через queue.take(2): {preview_ids}")
+        print(f"  Полный повторный обход очереди: {[task.id for task in all_tasks]}")
+        for task in all_tasks:
+            print(f"   id={task.id!r}, payload={task.payload}")
 
     Path(file_path).unlink(missing_ok=True)
-    print("\nДанные успешно собраны из всех источников!\n")
+    print("\nTaskQueue успешно отработала для всех источников.\n")
 
 
 if __name__ == "__main__":
