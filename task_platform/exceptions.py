@@ -26,3 +26,15 @@ class InvalidTaskSource(TaskSourceError):
 
 class TaskValidationError(TaskPlatformError):
     """Нарушение инварианта модели задачи"""
+
+
+class HandleError(TaskPlatformError):
+    """Невозможно обработать задачу"""
+
+
+class ExecutorWorkersCountError(TaskPlatformError):
+    """Не валидное кол-во воркеров в executor"""
+
+
+class ExecutorHandlerTypeError(TaskPlatformError):
+    """Не валидный типа обработчика"""
